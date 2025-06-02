@@ -365,3 +365,27 @@ FodyWeavers.xsd
 # My Exceptions
 *.txt
 MyGrid/
+/MyGrid/MyGrid.vcxproj
+/MyGrid/MyGrid.vcxproj.filters
+/Q1/Lists.txt
+/Q10/Data.txt
+/Q10/TestData.txt
+/Q10/TestData2.txt
+/Q2/Data.txt
+/Q2/TestData.txt
+/Q3/Data.txt
+/Q3/TestData.txt
+/Q4/Data.txt
+/Q4/TestData.txt
+/Q5/Data.txt
+/Q5/TestData.txt
+/Q6/Data.txt
+/Q6/TestData.txt
+/Q7/Data.txt
+/Q7/Test.txt
+/Q7/TestData.txt
+/Q8/Data.txt
+/Q8/TestData.txt
+/Q8/TestData2.txt
+/Q9/Data.txt
+/Q9/TestData.txt
