@@ -17,6 +17,7 @@ int main() {
 	for ( std::string line; std::getline( file, line ); ) {
 		// pattern made with string literal
 		// part 1
+		// the comma separating groups is part of the regex! Use .* instead to separate groups!
 		std::regex patternA{ R"(mul\((\d{1,3}),(\d{1,3})\))" };
 		std::sregex_token_iterator numIteratorA{ line.begin(), line.end(), patternA, {1,2} };
 		// part 2
