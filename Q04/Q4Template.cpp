@@ -1,7 +1,7 @@
+#include "MyTGrid.h"
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "MyTGrid.h"
 
 int countWords( MyTGrid<char> grid, std::string input );
 int countWordsCross( MyTGrid<char> grid, std::string input );

@@ -1,8 +1,9 @@
+#include "MyTGrid.h"
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
-#include "MyTGrid.h"
+#include <utility> //std::pair
 
 int main() {
 	std::ifstream file( "TestData.txt" );
@@ -23,6 +24,7 @@ int main() {
 	}
 
 	file.close();
+
 
 
 	return 0;
