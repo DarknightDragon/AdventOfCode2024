@@ -21,5 +21,13 @@
     <Text Include="Data.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="TestData2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Q12.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
