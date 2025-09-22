@@ -13,6 +13,10 @@ private:
 	std::vector<std::pair<unsigned int, unsigned int>> coords;
 
 	bool connectedAbove( std::pair<unsigned int, unsigned int> coord ) {
+		if ( coord.first == 0 ) {
+			return false;
+		}
+
 		bool ans = false;
 
 		for ( int i = 0; i < coords.size(); i++ ) {
@@ -27,6 +31,7 @@ private:
 			}
 			else if ( coords.at( i ).first == coord.first - 1 && coords.at( i ).second == coord.second ) {
 				ans = true;
+				break;
 			}
 		}
 
@@ -36,6 +41,10 @@ private:
 	bool connectedAbove( unsigned int row, unsigned int col ) { return connectedAbove( { row, col } ); }
 
 	bool connectedBelow( std::pair<unsigned int, unsigned int> coord ) {
+		if ( coord.first >= coords.at( coords.size() - 1 ).first ) {
+			return false;
+		}
+
 		bool ans = false;
 
 		for ( int i = 0; i < coords.size(); i++ ) {
@@ -50,6 +59,7 @@ private:
 			}
 			else if ( coords.at( i ).first == coord.first + 1 && coords.at( i ).second == coord.second ) {
 				ans = true;
+				break;
 			}
 		}
 
@@ -59,6 +69,10 @@ private:
 	bool connectedBelow( unsigned int row, unsigned int col ) { return connectedBelow( { row, col } ); }
 
 	bool connectedLeft( std::pair<unsigned int, unsigned int> coord ) {
+		if ( coord.second == 0 ) {
+			return false;
+		}
+
 		bool ans = false;
 
 		for ( int i = 0; i < coords.size(); i++ ) {
@@ -73,6 +87,7 @@ private:
 			}
 			else if ( coords.at( i ).first == coord.first && coords.at( i ).second == coord.second - 1 ) {
 				ans = true;
+				break;
 			}
 		}
 
@@ -96,6 +111,7 @@ private:
 			}
 			else if ( coords.at( i ).first == coord.first && coords.at( i ).second == coord.second + 1 ) {
 				ans = true;
+				break;
 			}
 		}
 
@@ -111,6 +127,13 @@ public:
 		std::sort( inVec.begin(), inVec.end() );
 		coords.swap( inVec );
 		area = coords.size();
+		for ( int i = 0; i < coords.size(); i++ ) {
+			perimeter += 4;
+			if ( connectedAbove( coords.at( i ) ) ) { --perimeter; }
+			if ( connectedBelow( coords.at( i ) ) ) { --perimeter; }
+			if ( connectedLeft( coords.at( i ) ) ) { --perimeter; }
+			if ( connectedRight( coords.at( i ) ) ) { --perimeter; }
+		}
 	}
 
 	unsigned int getPerimeter() { return perimeter; }
@@ -118,6 +141,55 @@ public:
 	unsigned int getArea() { return area; }
 
 	unsigned int getPrice() { return area * perimeter; }
+
+	void add( std::pair<unsigned int, unsigned int> coord ) {
+		short neighbors = 0;
+		bool alreadyExists = false;
+		for ( int i = 0; i < coords.size(); i++ ) {
+			if ( coords.at( i ) == coord ) {
+				alreadyExists = true;
+				break;
+			}
+			// check if new coord is below existing coord
+			if ( coords.at( i ).first == coord.first - 1 && coords.at(i).second == coord.second ) {
+				++neighbors;
+			}
+			// check if new coord is above existing coord
+			if ( coords.at( i ).first == coord.first + 1 && coords.at( i ).second == coord.second ) {
+				++neighbors;
+			}
+			// check if new coord is right of existing coord
+			if ( coords.at( i ).first == coord.first && coords.at( i ).second == coord.second - 1 ) {
+				++neighbors;
+			}
+			// check if new coord is left of existing coord
+			if ( coords.at( i ).first == coord.first && coords.at( i ).second == coord.second + 1 ) {
+				++neighbors;
+			}
+		}
+
+		if ( !alreadyExists ) {
+			perimeter += 4 - neighbors;
+			++area;
+			coords.emplace_back( coord );
+		}
+	}
+
+	void add( unsigned int row, unsigned int col ) { add( { row, col } ); }
+
+	void add( std::vector<std::pair<unsigned int, unsigned int>> vec ) {
+		for ( std::pair coord : vec ) {
+			add( coord );
+		}
+	}
+
+	void reserve( unsigned int n ) { coords.reserve( n ); }
+
+	void clear() {
+		coords.clear();
+		area = 0;
+		perimeter = 0;
+	}
 
 	// implementation only if debugging needed
 	/*std::string toString() {
