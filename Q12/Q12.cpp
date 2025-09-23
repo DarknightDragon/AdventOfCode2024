@@ -201,6 +201,8 @@ public:
 	}*/
 };
 
+void dfs( std::pair<unsigned int, unsigned int> coord, char direction, MyTGrid<bool>& visited );
+
 int main() {
 	std::ifstream file( "TestData.txt" );
 	MyTGrid<char> grid;
@@ -221,7 +223,11 @@ int main() {
 
 	file.close();
 
-
+	MyTGrid<bool> visited( grid.getNumColumns() );
+	visited.reserve( grid.size() );
+	for ( int i = 0; i < grid.getNumRows(); i++ ) {
+		visited.addRow( std::vector<bool>( grid.getNumColumns(), false ) );
+	}
 
 	return 0;
 }
