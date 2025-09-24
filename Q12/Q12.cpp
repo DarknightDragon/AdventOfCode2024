@@ -201,11 +201,12 @@ public:
 	}*/
 };
 
-void dfs( std::pair<unsigned int, unsigned int> coord, char direction, MyTGrid<bool>& visited );
+void dfs( std::pair<unsigned int, unsigned int> coord, char direction, Region& region, MyTGrid<bool>& visited, const MyTGrid<char>& grid );
 
 int main() {
 	std::ifstream file( "TestData.txt" );
 	MyTGrid<char> grid;
+	std::vector<Region> vecRegions;
 
 	if ( !file.is_open() ) {
 		std::cerr << "File error" << std::endl;
@@ -229,5 +230,98 @@ int main() {
 		visited.addRow( std::vector<bool>( grid.getNumColumns(), false ) );
 	}
 
+	for ( int i = 0; i < grid.getNumRows(); i++ ) {
+		for ( int j = 0; j < grid.getNumColumns(); j++ ) {
+			if ( !visited.at( i, j ) ) {
+				vecRegions.emplace_back( Region() );
+				if ( i > 0 ) {
+					dfs( { i - 1, j }, 'U', vecRegions.back(), visited, grid );
+				}
+				if ( i < grid.getNumRows() - 1 ) {
+					dfs( { i + 1, j }, 'D', vecRegions.back(), visited, grid );
+				}
+				if ( j > 0 ) {
+					dfs( { i, j - 1 }, 'L', vecRegions.back(), visited, grid );
+				}
+				if ( j < grid.getNumColumns() - 1 ) {
+					dfs( { i, j + 1 }, 'R', vecRegions.back(), visited, grid );
+				}
+			}
+		}
+	}
+
 	return 0;
+}
+
+void dfs( std::pair<unsigned int, unsigned int> coord, char direction, Region& region, MyTGrid<bool>& visited, const MyTGrid<char>& grid ) {
+	if ( visited.at( coord.first, coord.second ) ) {
+		return;
+	}
+
+	switch ( direction ) {
+	// check if this letter same as letter below
+	case 'U': case 'u':
+		if ( grid.peek( coord.first, coord.second ) == grid.peek( coord.first + 1, coord.second ) ) {
+			region.add( coord );
+			visited.at( coord.first, coord.second ) = true;
+			if ( coord.first > 0 ) {
+				dfs( { coord.first - 1, coord.second }, 'U', region, visited, grid );
+			}
+			if ( coord.second > 0 ) {
+				dfs( { coord.first, coord.second - 1 }, 'L', region, visited, grid );
+			}
+			if ( coord.second < grid.getNumColumns() - 1 ) {
+				dfs( { coord.first, coord.second + 1 }, 'R', region, visited, grid );
+			}
+		}
+		break;
+	// check if this letter same as letter above
+	case 'D': case 'd':
+		if ( grid.peek( coord.first, coord.second ) == grid.peek( coord.first - 1, coord.second ) ) {
+			region.add( coord );
+			visited.at( coord.first, coord.second ) = true;
+			if ( coord.first < grid.getNumRows() - 1 ) {
+				dfs( { coord.first + 1, coord.second }, 'D', region, visited, grid );
+			}
+			if ( coord.second > 0 ) {
+				dfs( { coord.first, coord.second - 1 }, 'L', region, visited, grid );
+			}
+			if ( coord.second < grid.getNumColumns() - 1 ) {
+				dfs( { coord.first, coord.second + 1 }, 'R', region, visited, grid );
+			}
+		}
+		break;
+	// check if this letter same as letter right
+	case 'L': case 'l':
+		if ( grid.peek( coord.first, coord.second ) == grid.peek( coord.first, coord.second + 1 ) ) {
+			region.add( coord );
+			visited.at( coord.first, coord.second ) = true;
+			if ( coord.first > 0 ) {
+				dfs( { coord.first - 1, coord.second }, 'U', region, visited, grid );
+			}
+			if ( coord.first < grid.getNumRows() - 1 ) {
+				dfs( { coord.first + 1, coord.second }, 'D', region, visited, grid );
+			}
+			if ( coord.second > 0 ) {
+				dfs( { coord.first, coord.second - 1 }, 'L', region, visited, grid );
+			}
+		}
+		break;
+	// check if this letter same as letter left
+	case 'R': case 'r':
+		if ( grid.peek( coord.first, coord.second ) == grid.peek( coord.first, coord.second - 1 ) ) {
+			region.add( coord );
+			visited.at( coord.first, coord.second ) = true;
+			if ( coord.first > 0 ) {
+				dfs( { coord.first - 1, coord.second }, 'U', region, visited, grid );
+			}
+			if ( coord.first < grid.getNumRows() - 1 ) {
+				dfs( { coord.first + 1, coord.second }, 'D', region, visited, grid );
+			}
+			if ( coord.second < grid.getNumColumns() - 1 ) {
+				dfs( { coord.first, coord.second + 1 }, 'R', region, visited, grid );
+			}
+		}
+		break;
+	}
 }
