@@ -47,30 +47,30 @@ void initP1Variables( const MyTGrid<int>& grid, std::vector<std::vector<int>>& a
 	for ( int i = 0; i < grid.getNumRows(); i++ ) {
 		for ( int j = 0; j < grid.getNumColumns(); j++ ) {
 			// create trailhead (0 locations) array
-			if ( grid.peek( i, j ) == 0 ) {
+			if ( grid.at( i, j ) == 0 ) {
 				trailheadLocs.emplace_back( i * grid.getNumColumns() + j );
 			}
 			// check number left
 			if ( j > 0 ) {
-				if ( grid.peek( i, j - 1 ) == grid.peek( i, j ) + 1 ) {
+				if ( grid.at( i, j - 1 ) == grid.at( i, j ) + 1 ) {
 					adjList[i * grid.getNumColumns() + j].emplace_back( i * grid.getNumColumns() + j - 1 );
 				}
 			}
 			// check number right
 			if ( j < grid.getNumColumns() - 1 ) {
-				if ( grid.peek( i, j + 1 ) == grid.peek( i, j ) + 1 ) {
+				if ( grid.at( i, j + 1 ) == grid.at( i, j ) + 1 ) {
 					adjList[i * grid.getNumColumns() + j].emplace_back( i * grid.getNumColumns() + j + 1 );
 				}
 			}
 			// check number above
 			if ( i > 0 ) {
-				if ( grid.peek( i - 1, j ) == grid.peek( i, j ) + 1 ) {
+				if ( grid.at( i - 1, j ) == grid.at( i, j ) + 1 ) {
 					adjList[i * grid.getNumColumns() + j].emplace_back( ( i - 1 ) * grid.getNumColumns() + j );
 				}
 			}
 			// check number below
 			if ( i < grid.getNumRows() - 1 ) {
-				if ( grid.peek( i + 1, j ) == grid.peek( i, j ) + 1 ) {
+				if ( grid.at( i + 1, j ) == grid.at( i, j ) + 1 ) {
 					adjList[i * grid.getNumColumns() + j].emplace_back( ( i + 1 ) * grid.getNumColumns() + j );
 				}
 			}
@@ -90,7 +90,7 @@ std::pair<unsigned int, unsigned int> generateCompleteTrails( const MyTGrid<int>
 		//// iterative
 		//int row = pos / grid.getNumRows(), col = pos - ( row * grid.getNumRows() );
 		//int nextPos = pos, int index = 0;
-		//while ( grid.peek( row, col ) != 9 ) {
+		//while ( grid.at( row, col ) != 9 ) {
 		//	if ( index )
 		//}
 
@@ -103,7 +103,7 @@ std::pair<unsigned int, unsigned int> generateCompleteTrails( const MyTGrid<int>
 
 bool completeTrail( const MyTGrid<int>& grid, const std::vector<std::vector<int>>& adjList, std::unordered_multimap<int, int>& visited, int startPos, int pos, unsigned int& sum, unsigned int& rating ) {
 	int row = pos / grid.getNumRows(), col = pos - ( row * grid.getNumRows() );
-	if ( grid.peek( row, col ) == 9 ) {
+	if ( grid.at( row, col ) == 9 ) {
 		++rating;
 		if ( visited.find( startPos ) == visited.end() ) {
 			visited.emplace( startPos, pos );

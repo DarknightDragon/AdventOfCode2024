@@ -99,7 +99,7 @@ int countChar( const MyTGrid<char>& grid, char c )
 
 	for ( int i = 0; i < numRows; i++ ) {
 		for ( int j = 0; j < numCols; j++ ) {
-			if ( grid.peek( i, j ) == c ) {
+			if ( grid.at( i, j ) == c ) {
 				count++;
 			}
 		}
@@ -293,7 +293,7 @@ bool isLoop( const MyTGrid<char>& grid, int guardRow, int guardCol, char guardPo
 
 		switch ( guardPos ) {
 		case 'U':
-			if ( grid.peek( guardRow - 1, guardCol ) == '#' ) {
+			if ( grid.at( guardRow - 1, guardCol ) == '#' ) {
 				guardPos = 'R';
 			}
 			else {
@@ -301,7 +301,7 @@ bool isLoop( const MyTGrid<char>& grid, int guardRow, int guardCol, char guardPo
 			}
 			break;
 		case 'R':
-			if ( grid.peek( guardRow, guardCol + 1 ) == '#' ) {
+			if ( grid.at( guardRow, guardCol + 1 ) == '#' ) {
 				guardPos = 'D';
 			}
 			else {
@@ -309,7 +309,7 @@ bool isLoop( const MyTGrid<char>& grid, int guardRow, int guardCol, char guardPo
 			}
 			break;
 		case 'D':
-			if ( grid.peek( guardRow + 1, guardCol ) == '#' ) {
+			if ( grid.at( guardRow + 1, guardCol ) == '#' ) {
 				guardPos = 'L';
 			}
 			else {
@@ -317,7 +317,7 @@ bool isLoop( const MyTGrid<char>& grid, int guardRow, int guardCol, char guardPo
 			}
 			break;
 		case 'L':
-			if ( grid.peek( guardRow, guardCol - 1 ) == '#' ) {
+			if ( grid.at( guardRow, guardCol - 1 ) == '#' ) {
 				guardPos = 'U';
 			}
 			else {

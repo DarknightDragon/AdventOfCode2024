@@ -32,7 +32,7 @@ public:
 		}
 
 		numCols = cols;
-		numRows = data.size / cols;
+		numRows = data.size() / cols;
 		grid = data;
 	}
 
@@ -81,11 +81,13 @@ public:
 
 	void reserve( unsigned long long n ) { grid.reserve( n ); }
 
-	T peek( unsigned int row, unsigned int col ) const { return grid.at( numCols * row + col ); }
-
 	T& at( unsigned int row, unsigned int col ) { return this -> operator()( row, col ); }
 
+	const T& at( unsigned int row, unsigned int col ) const { return this -> operator()( row, col ); }
+
 	T& operator() ( unsigned int row, unsigned int col ) { return grid.at( numCols * row + col ); }
+
+	const T& operator() ( unsigned int row, unsigned int col ) const { return grid.at( numCols * row + col ); }
 
 	friend std::ostream& operator<< ( std::ostream& os, const MyTGrid& grid ) {
 		os << "Grid: " << grid.numRows << "x" << grid.numCols << "\n";
