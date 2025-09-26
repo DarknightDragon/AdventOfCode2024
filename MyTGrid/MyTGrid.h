@@ -23,7 +23,8 @@ public:
 		grid.reserve( cols );
 	}
 
-	MyTGrid( unsigned int cols, std::vector<T> data ) {
+	template <typename Container>
+	MyTGrid( unsigned int cols, Container data ) {
 		if ( cols == 0 ) {
 			throw std::invalid_argument( "Grid constructor has 0 size." );
 		}
@@ -33,7 +34,9 @@ public:
 
 		numCols = cols;
 		numRows = data.size() / cols;
-		grid = data;
+		for ( auto elem : data ) {
+			grid.emplace_back( elem );
+		}
 	}
 
 	unsigned int size() const { return grid.size(); }
@@ -54,7 +57,8 @@ public:
 		numRows = grid.size() / col;
 	}
 
-	void addRow( std::vector<T> input ) {
+	template <typename Container>
+	void addRow( Container input ) {
 		if ( numCols == 0 ) {
 			numCols = input.size();
 		}
@@ -62,7 +66,9 @@ public:
 			throw std::length_error( "Input size differs from current column size. Violates rectangle grid." );
 		}
 
-		grid.insert( grid.end(), input.begin(), input.end() );
+		for ( auto elem : input ) {
+			grid.emplace_back( elem );
+		}
 		++numRows;
 	}
 
