@@ -92,7 +92,7 @@ int generateAntinodeLocsP2( MyTGrid<char> grid, std::unordered_multimap<char, st
 
 	// find each key and the number of appearances. make a counter, for each key in map, compare against each other key. increate iterator for each counter to not redo matches
 	// check based on slope between each match. check if grid at location is #, if not increase totalUniqueAntinode and make char #
-	for ( auto entry : keyMap ) {
+	for ( const auto& entry : keyMap ) {
 		if ( entry.second == 1 ) {
 			continue;
 		}
