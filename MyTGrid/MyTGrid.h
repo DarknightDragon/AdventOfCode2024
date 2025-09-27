@@ -23,6 +23,7 @@ public:
 		grid.reserve( cols );
 	}
 
+	// allows any STL container to be used as input
 	template <typename Container>
 	MyTGrid( unsigned int cols, Container data ) {
 		if ( cols == 0 ) {
@@ -57,6 +58,7 @@ public:
 		numRows = grid.size() / col;
 	}
 
+	// allows any STL container to be used as input
 	template <typename Container>
 	void addRow( Container input ) {
 		if ( numCols == 0 ) {
@@ -140,6 +142,7 @@ public:
 		grid.reserve( cols );
 	}
 
+	// allows any STL container to be used as input
 	template <typename Container>
 	MyTGrid( unsigned int cols, Container data ) {
 		if ( cols == 0 ) {
@@ -174,6 +177,7 @@ public:
 		numRows = grid.size() / col;
 	}
 
+	// allows any STL container to be used as input
 	template <typename Container>
 	void addRow( Container input ) {
 		if ( numCols == 0 ) {
