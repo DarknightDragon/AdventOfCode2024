@@ -123,6 +123,12 @@ private:
 public:
 	Region() = default;
 
+	Region( unsigned int row, unsigned int col ) {
+		coords.emplace_back( row, col );
+		area = 1;
+		perimeter = 4;
+	}
+
 	Region( std::vector<std::pair<unsigned int, unsigned int>> inVec ) {
 		std::sort( inVec.begin(), inVec.end() );
 		coords.swap( inVec );
@@ -136,11 +142,11 @@ public:
 		}
 	}
 
-	unsigned int getPerimeter() { return perimeter; }
+	unsigned int getPerimeter() const { return perimeter; }
 
-	unsigned int getArea() { return area; }
+	unsigned int getArea() const { return area; }
 
-	unsigned int getPrice() { return area * perimeter; }
+	unsigned int getPrice() const { return area * perimeter; }
 
 	void add( std::pair<unsigned int, unsigned int> coord ) {
 		short neighbors = 0;
@@ -152,19 +158,19 @@ public:
 			}
 			// check if new coord is below existing coord
 			if ( coords.at( i ).first == coord.first - 1 && coords.at(i).second == coord.second ) {
-				++neighbors;
+				neighbors += 2;
 			}
 			// check if new coord is above existing coord
 			if ( coords.at( i ).first == coord.first + 1 && coords.at( i ).second == coord.second ) {
-				++neighbors;
+				neighbors += 2;
 			}
 			// check if new coord is right of existing coord
 			if ( coords.at( i ).first == coord.first && coords.at( i ).second == coord.second - 1 ) {
-				++neighbors;
+				neighbors += 2;
 			}
 			// check if new coord is left of existing coord
 			if ( coords.at( i ).first == coord.first && coords.at( i ).second == coord.second + 1 ) {
-				++neighbors;
+				neighbors += 2;
 			}
 		}
 
@@ -178,7 +184,7 @@ public:
 	void add( unsigned int row, unsigned int col ) { add( { row, col } ); }
 
 	void add( std::vector<std::pair<unsigned int, unsigned int>> vec ) {
-		for ( std::pair coord : vec ) {
+		for ( std::pair<unsigned int, unsigned int> coord : vec ) {
 			add( coord );
 		}
 	}
@@ -204,9 +210,10 @@ public:
 void dfs( std::pair<unsigned int, unsigned int> coord, char direction, Region& region, MyTGrid<bool>& visited, const MyTGrid<char>& grid );
 
 int main() {
-	std::ifstream file( "TestData.txt" );
+	std::ifstream file( "Data.txt" );
 	MyTGrid<char> grid;
 	std::vector<Region> vecRegions;
+	unsigned int total{ 0 };
 
 	if ( !file.is_open() ) {
 		std::cerr << "File error" << std::endl;
@@ -233,7 +240,8 @@ int main() {
 	for ( int i = 0; i < grid.getNumRows(); i++ ) {
 		for ( int j = 0; j < grid.getNumColumns(); j++ ) {
 			if ( !visited.at( i, j ) ) {
-				vecRegions.emplace_back( Region() );
+				vecRegions.emplace_back( Region( i, j ) );
+				visited.at( i, j ) = true;
 				if ( i > 0 ) {
 					dfs( { i - 1, j }, 'U', vecRegions.back(), visited, grid );
 				}
@@ -250,6 +258,11 @@ int main() {
 		}
 	}
 
+	for ( const Region& region : vecRegions ) {
+		total += region.getPrice();
+	}
+	std::cout << "Total Price: " << total << std::endl;
+
 	return 0;
 }
 
@@ -261,7 +274,7 @@ void dfs( std::pair<unsigned int, unsigned int> coord, char direction, Region& r
 	switch ( direction ) {
 	// check if this letter same as letter below
 	case 'U': case 'u':
-		if ( grid.peek( coord.first, coord.second ) == grid.peek( coord.first + 1, coord.second ) ) {
+		if ( grid.at( coord.first, coord.second ) == grid.at( coord.first + 1, coord.second ) ) {
 			region.add( coord );
 			visited.at( coord.first, coord.second ) = true;
 			if ( coord.first > 0 ) {
@@ -277,7 +290,7 @@ void dfs( std::pair<unsigned int, unsigned int> coord, char direction, Region& r
 		break;
 	// check if this letter same as letter above
 	case 'D': case 'd':
-		if ( grid.peek( coord.first, coord.second ) == grid.peek( coord.first - 1, coord.second ) ) {
+		if ( grid.at( coord.first, coord.second ) == grid.at( coord.first - 1, coord.second ) ) {
 			region.add( coord );
 			visited.at( coord.first, coord.second ) = true;
 			if ( coord.first < grid.getNumRows() - 1 ) {
@@ -293,7 +306,7 @@ void dfs( std::pair<unsigned int, unsigned int> coord, char direction, Region& r
 		break;
 	// check if this letter same as letter right
 	case 'L': case 'l':
-		if ( grid.peek( coord.first, coord.second ) == grid.peek( coord.first, coord.second + 1 ) ) {
+		if ( grid.at( coord.first, coord.second ) == grid.at( coord.first, coord.second + 1 ) ) {
 			region.add( coord );
 			visited.at( coord.first, coord.second ) = true;
 			if ( coord.first > 0 ) {
@@ -309,7 +322,7 @@ void dfs( std::pair<unsigned int, unsigned int> coord, char direction, Region& r
 		break;
 	// check if this letter same as letter left
 	case 'R': case 'r':
-		if ( grid.peek( coord.first, coord.second ) == grid.peek( coord.first, coord.second - 1 ) ) {
+		if ( grid.at( coord.first, coord.second ) == grid.at( coord.first, coord.second - 1 ) ) {
 			region.add( coord );
 			visited.at( coord.first, coord.second ) = true;
 			if ( coord.first > 0 ) {
