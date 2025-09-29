@@ -97,6 +97,20 @@ public:
 
 	const T& operator() ( unsigned int row, unsigned int col ) const { return grid.at( numCols * row + col ); }
 
+	// Below code needed for ranged for loop access
+
+	auto begin() { return grid.begin(); }
+
+	auto begin() const { return grid.begin(); }
+
+	auto cbegin() const { return grid.cbegin(); }
+
+	auto end() { return grid.end(); }
+
+	auto end() const { return grid.end(); }
+
+	auto cend() const { return grid.cend(); }
+
 	friend std::ostream& operator<< ( std::ostream& os, const MyTGrid& grid ) {
 		os << "Grid: " << grid.numRows << "x" << grid.numCols << "\n";
 		int counter{ 0 };
