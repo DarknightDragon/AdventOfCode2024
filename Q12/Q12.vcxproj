@@ -130,6 +130,8 @@
     <Text Include="Data.txt" />
     <Text Include="TestData.txt" />
     <Text Include="TestData2.txt" />
+    <Text Include="TestData3.txt" />
+    <Text Include="TestData4.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Q12.cpp" />
